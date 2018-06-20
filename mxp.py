@@ -285,9 +285,12 @@ def _parse_ingredients(it, current, recipe):
             current = next(it)
         ingredient = _test_ingredient(current)
         while ingredient:
-            if ingredient.amount == '' and ingredient.measure == '' and ingredient.ingredient[0] == '-':
-                if len(ingredients) > 0:
-                    ingredients[-1].preparation_method += ingredient.ingredient
+            if re.search(".*--", ingredient.ingredient):
+                pass
+            elif re.search(".*--", ingredient.preparation_method):
+                pass
+            elif ingredient.amount == '' and ingredient.measure == '':
+                pass
             else:
                 ingredients.append(ingredient)
             current = next(it)
