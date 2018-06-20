@@ -85,7 +85,7 @@ def parse_recipes(lines):
 
 def split_recipe_lines(lines):
     """Breaks up multiple recipes into lists of lines for each recipe.
-    
+
     Takes an iterable of lines corresponding to multiple recipes and yields
     a list of lines for each of the recipes. Removes trailing whitespace
     including newline characters from the end of each line.
@@ -273,7 +273,7 @@ def _test_categories(line):
 
 
 def _parse_ingredients(it, current, recipe):
-    """Skips over ingredient heading lines and parses valid ingredient lines and 
+    """Skips over ingredient heading lines and parses valid ingredient lines and
     advances to the first line that is not a valid ingredient line.
     """
     ingredients = []
@@ -285,7 +285,11 @@ def _parse_ingredients(it, current, recipe):
             current = next(it)
         ingredient = _test_ingredient(current)
         while ingredient:
-            ingredients.append(ingredient)
+            if ingredient.amount == '' and ingredient.measure == '' and ingredient.ingredient[0] == '-':
+                if len(ingredients) > 0:
+                    ingredients[-1].preparation_method += ingredient.ingredient
+            else:
+                ingredients.append(ingredient)
             current = next(it)
             ingredient = _test_ingredient(current)
     finally:
